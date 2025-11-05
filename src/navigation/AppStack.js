@@ -7,6 +7,7 @@ import CadastroScreen from "../screens/CadastroScreen";
 import HomeScreen from "../screens/HomeScreen";
 import AgendamentoScreens from "../screens/AgendamentoScreens";
 import MeusAgendamentos from "../screens/MeusAgendamentos";
+import PrecosScreen from "../screens/PrecosScreen"; // ✅ nome correto
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ export default function AppStack() {
         name="MeusAgendamentos"
         component={MeusAgendamentos}
         options={{ title: "Meus Agendamentos" }}
+      />
+      <Stack.Screen
+        name="Precos"
+        component={PrecosScreen}
+        options={{ title: "Tabela de Preços" }}
       />
     </Stack.Navigator>
   );

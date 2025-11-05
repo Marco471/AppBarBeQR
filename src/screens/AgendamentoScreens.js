@@ -45,6 +45,13 @@ export default function AgendamentoScreen({ route, navigation }) {
       Alert.alert("Erro", "Usuário não logado!");
       navigation.navigate("Login");
     }
+
+    // Inicia o lembrete de agendamentos próximos
+    const timer = setInterval(() => {
+      verificarAgendamentosProximos();
+    }, 60 * 1000); // checa a cada 1 minuto
+
+    return () => clearInterval(timer);
   }, []);
 
   const gerarHorarios = () => {
@@ -130,6 +137,39 @@ export default function AgendamentoScreen({ route, navigation }) {
     }
   };
 
+  // Função que verifica agendamentos próximos do horário atual
+  const verificarAgendamentosProximos = async () => {
+    const agora = new Date();
+    const [ano, mes, dia] = [
+      agora.getFullYear().toString(),
+      (agora.getMonth() + 1).toString(),
+      agora.getDate().toString()
+    ];
+
+    const q = query(
+      collection(db, "agendamentos"),
+      where("ano", "==", ano),
+      where("mes", "==", mes),
+      where("dia", "==", dia),
+      where("userId", "==", auth.currentUser.uid)
+    );
+
+    const snapshot = await getDocs(q);
+    snapshot.docs.forEach((doc) => {
+      const agendamento = doc.data();
+      const [horaAg, minAg] = agendamento.hora.split(":").map(Number);
+      const horarioAgendamento = new Date();
+      horarioAgendamento.setHours(horaAg, minAg, 0, 0);
+
+      if (horarioAgendamento - agora > 0 && horarioAgendamento - agora <= 15 * 60 * 1000) {
+        Alert.alert(
+          "⏰ Lembrete",
+          `Seu agendamento de ${agendamento.servico} é às ${agendamento.hora}`
+        );
+      }
+    });
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "#FFF" }}
@@ -201,7 +241,6 @@ export default function AgendamentoScreen({ route, navigation }) {
           </>
         )}
 
-        {/* Botão Confirmar agora dentro do ScrollView */}
         <View style={{ alignItems: 'center', marginTop: 30 }}>
           <TouchableOpacity style={styles.confirmButton} onPress={handleAgendar}>
             <Text style={styles.confirmText}>Confirmar</Text>
@@ -237,7 +276,6 @@ const styles = StyleSheet.create({
   },
   confirmText: { color: "#FFF", fontWeight: "bold", fontSize: 16 },
 });
-
 
 
 
