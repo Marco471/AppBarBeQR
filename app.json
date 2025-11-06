@@ -17,12 +17,13 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.lucasfirmino.appbarbeqr",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.AppBarbeQR"
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,3 +33,4 @@
     ]
   }
 }
+
