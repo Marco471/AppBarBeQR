@@ -6,6 +6,9 @@ import {
   Text,
   StyleSheet,
   Modal,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from "react-native";
 import { auth } from "../firebase/firebaseConfig";
 import {
@@ -59,74 +62,87 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Nome da Barbearia */}
-      <Text style={styles.title}>Lucas Firmino Barbearia</Text>
-
-      {/* Inputs */}
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
-      <TextInput
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-      />
-
-      {/* Botão Login */}
-      <TouchableOpacity style={styles.buttonSmall} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-
-      <View style={{ height: 10 }} />
-
-      {/* Botão Cadastrar */}
-      <TouchableOpacity
-        style={styles.buttonSmall}
-        onPress={() => navigation.navigate("Cadastro")}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
+        <View style={styles.container}>
+          {/* Nome da Barbearia */}
+          <Text style={styles.title}>Lucas Firmino Barbearia</Text>
 
-      <View style={{ height: 15 }} />
+          {/* Inputs */}
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TextInput
+            placeholder="Senha"
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+            secureTextEntry
+          />
 
-      {/* Texto Esqueci minha senha (preto, sem fundo) */}
-      <TouchableOpacity onPress={handlePasswordReset}>
-        <Text style={styles.linkText}>Esqueci minha senha</Text>
-      </TouchableOpacity>
+          {/* Botão Login */}
+          <TouchableOpacity style={styles.buttonSmall} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
 
-      {/* Modal de Mensagem */}
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>{modalMessage}</Text>
+          <View style={{ height: 10 }} />
 
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={styles.modalButtonText}>OK</Text>
-            </TouchableOpacity>
-          </View>
+          {/* Botão Cadastrar */}
+          <TouchableOpacity
+            style={styles.buttonSmall}
+            onPress={() => navigation.navigate("Cadastro")}
+          >
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
+
+          <View style={{ height: 15 }} />
+
+          {/* Texto Esqueci minha senha */}
+          <TouchableOpacity onPress={handlePasswordReset}>
+            <Text style={styles.linkText}>Esqueci minha senha</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+
+        {/* Modal de Mensagem */}
+        <Modal
+          visible={modalVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalText}>{modalMessage}</Text>
+
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -161,10 +177,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   linkText: {
-    color: "#000", // preto
+    color: "#000",
     fontSize: 14,
     textAlign: "center",
-    textDecorationLine: "underline", // opcional, pode remover se quiser sem sublinhado
+    textDecorationLine: "underline",
   },
   modalBackground: {
     flex: 1,

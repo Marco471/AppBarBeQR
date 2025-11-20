@@ -1,36 +1,44 @@
 {
   "expo": {
     "name": "AppBarbeQR",
-    "slug": "AppBarbeQR",
-    "scheme": "barbeqr",
-    "version": "1.0.0",
+    "slug": "appbarbeqr",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo.jpg",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#001F54"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "com.lucasfirmino.appbarbeqr",
-      "versionCode": 1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#001F54"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.lucasfirmino.appbarbeqrone",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-web-browser"
-    ]
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "4586457f-a893-4141-8c88-829a8f40808a"
+      }
+    }
   }
 }
+
 

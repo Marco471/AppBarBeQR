@@ -33,7 +33,7 @@ export default function AppStack() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ title: "Dom Julios Barbearia" }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Agendamento"

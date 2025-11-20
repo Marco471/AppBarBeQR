@@ -9,35 +9,22 @@ const { width: screenWidth } = Dimensions.get('window');
 export default function HomeScreen({ navigation }) {
   const [services, setServices] = useState([]);
 
-  // 🔥 Busca preços em tempo real do Firestore
   useEffect(() => {
     const docRef = doc(db, "precos", "tabela");
 
-    const unsubscribe = onSnapshot(
-      docRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.data();
-          console.log("📄 Dados recebidos do Firebase:", data);
-
-          // ✅ Corrigido: nomes das chaves exatamente como estão no Firestore
-          const mappedServices = [
-            { id: "1", name: "Corte (terça a quinta)", price: `R$ ${data.corteSemana || "--"}` },
-            { id: "2", name: "Corte (sexta e sábado)", price: `R$ ${data.corteFim || "--"}` },
-            { id: "3", name: "Barba Tradicional", price: `R$ ${data.barba || "--"}` },
-            { id: "4", name: "Cabelo + Barba", price: `R$ ${data.cabeloBarba || "--"}` },
-            { id: "5", name: "Platinado", price: `R$ ${data.platinado || "--"}` },
-          ];
-
-          setServices(mappedServices);
-        } else {
-          console.log("⚠️ Documento 'precos/tabela' não encontrado");
-        }
-      },
-      (error) => {
-        console.error("❌ Erro ao ler preços:", error);
+    const unsubscribe = onSnapshot(docRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        const mappedServices = [
+          { id: "1", name: "Corte (terça a quinta)", price: `R$ ${data.corteSemana || "--"}` },
+          { id: "2", name: "Corte (sexta e sábado)", price: `R$ ${data.corteFim || "--"}` },
+          { id: "3", name: "Barba Tradicional", price: `R$ ${data.barba || "--"}` },
+          { id: "4", name: "Cabelo + Barba", price: `R$ ${data.cabeloBarba || "--"}` },
+          { id: "5", name: "Platinado", price: `R$ ${data.platinado || "--"}` },
+        ];
+        setServices(mappedServices);
       }
-    );
+    });
 
     return () => unsubscribe();
   }, []);
@@ -68,14 +55,11 @@ export default function HomeScreen({ navigation }) {
       ListHeaderComponent={
         <View style={styles.header}>
           <Image
-            source={require('../../assets/logo.png')}
+            source={require('../../assets/logo.jpg')}
             style={styles.logo}
-            resizeMode="cover"
+            resizeMode="cover" // ✅ cobre toda a largura sem cortar muito
           />
-          <Text style={styles.logoName}>Lucas Firmino</Text>
-          <Text style={styles.logoText}>Barbearia</Text>
 
-          {/* Botão Logout */}
           <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
             <Text style={styles.logoutText}>Sair</Text>
           </TouchableOpacity>
@@ -101,22 +85,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: screenWidth,
-    height: screenWidth * 0.55,
-  },
-  logoName: {
-    textAlign: 'center',
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#001F54',
-    marginTop: 10,
-  },
-  logoText: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: '600',
-    color: '#001F54',
-    marginTop: 2,
+    width: screenWidth, // ✅ usa 100% da largura
+    height: screenWidth * 0.55, // ajusta proporcionalmente
+    borderRadius: 10,
   },
   logoutButton: {
     marginTop: 10,
